@@ -1,5 +1,8 @@
 use std::{fs, path::Path};
 use serde::{Serialize, Deserialize};
+use image::{DynamicImage, ImageReader, ImageFormat};
+use std::io::Cursor;
+use base64::{engine::general_purpose, Engine as _};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Settings {
@@ -52,11 +55,25 @@ fn get_image_filenames(input_path: String) -> Result<Vec<String>, String> {
     Ok(filenames)
 }
 
+fn image_to_base64(img: &DynamicImage) -> Result<String, String> {
+    let mut image_data: Vec<u8> = Vec::new();
+    img.write_to(&mut Cursor::new(&mut image_data), ImageFormat::Png)
+        .map_err(|e| e.to_string())?;
+    let res_base64 = general_purpose::STANDARD.encode(image_data);
+    Ok(format!("data:image/png;base64,{}", res_base64))
+}
+
+#[tauri::command]
+fn get_image(image_path: String) -> Result<String, String> {
+    let img = ImageReader::open(&image_path).map_err(|e| e.to_string())?.decode().map_err(|e| e.to_string())?;
+    image_to_base64(&img)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames])
+        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
