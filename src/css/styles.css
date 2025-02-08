@@ -1,7 +1,14 @@
+:root {
+    --text-color: black;
+    --border-radius: 10px;
+}
+
 main {
     width: 100%;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 32px;
 }
 
 #images-nav {
@@ -20,6 +27,10 @@ main {
     cursor: pointer;
 }
 
+#images-nav .dot.active {
+    background-color: red;
+}
+
 #images-nav .dot:hover::after {
     content: attr(data-filename);
     position: absolute;
@@ -32,4 +43,11 @@ main {
     border-radius: 5px;
     white-space: nowrap;
     font-size: 12px;
+}
+
+#main-image {
+    max-width: 700px;
+    border: 2px solid var(--text-color);
+    border-radius: var(--border-radius);
+    padding: 16px;
 }

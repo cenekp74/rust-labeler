@@ -25,6 +25,13 @@ function displayImage(image_filename) {
     })
 }
 
+function changeActiveImage(image_filename) {
+    window.activeImage = image_filename
+    displayImage(image_filename)
+    dotEle = document.querySelector(`.dot[data-filename='${image_filename}']`)
+    dotEle.classList.add("active")
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     window.settings = loadSettings().then(() => {
         getImageFilenames().then((filenames) => {
@@ -35,6 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 ele.setAttribute("data-filename", filename)
                 container.appendChild(ele)
             });
+            changeActiveImage(filenames[0])
         })
     })
 });
