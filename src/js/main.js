@@ -28,7 +28,13 @@ function displayImage(image_filename) {
 window.addEventListener("DOMContentLoaded", () => {
     window.settings = loadSettings().then(() => {
         getImageFilenames().then((filenames) => {
-            
+            const container = document.getElementById("images-nav")
+            filenames.forEach(filename => {
+                ele = document.createElement("div")
+                ele.classList.add("dot")
+                ele.setAttribute("data-filename", filename)
+                container.appendChild(ele)
+            });
         })
     })
 });

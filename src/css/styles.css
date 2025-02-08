@@ -1,0 +1,35 @@
+main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#images-nav {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+}
+
+#images-nav .dot {
+    width: 10px;
+    height: 10px;
+    background-color: blue;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
+
+#images-nav .dot:hover::after {
+    content: attr(data-filename);
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+}
