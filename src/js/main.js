@@ -32,6 +32,16 @@ function changeActiveImage(image_filename) {
     dotEle.classList.add("active")
 }
 
+function reloadCategories() {
+    window.settings.categories.forEach((category) => {
+        const container = document.getElementById("categories")
+        ele = document.createElement("div")
+        ele.classList.add("category-button")
+        ele.innerText = category
+        container.appendChild(ele)
+    })
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     window.settings = loadSettings().then(() => {
         getImageFilenames().then((filenames) => {
@@ -42,6 +52,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 ele.setAttribute("data-filename", filename)
                 container.appendChild(ele)
             });
+            reloadCategories()
             changeActiveImage(filenames[0])
         })
     })

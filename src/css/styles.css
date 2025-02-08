@@ -51,3 +51,16 @@ main {
     border-radius: var(--border-radius);
     padding: 16px;
 }
+
+#categories {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    gap: 16px;
+}
+
+.category-button {
+    border: 1px solid var(--text-color);
+    border-radius: var(--border-radius);
+    padding: 8px 16px;
+}

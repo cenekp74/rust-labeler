@@ -1,5 +1,8 @@
 {
   "input_path": "C:/Users/potuz/Pictures/iono-temp",
   "output_file_name": "output.json",
-  "categories": []
+  "categories": [
+    "1",
+    "2"
+  ]
 }
