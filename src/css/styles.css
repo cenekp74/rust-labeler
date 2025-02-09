@@ -7,12 +7,26 @@
     --dot-labeled-color: hsl(225, 20%, 40%);
     --category-button-active-color: var(--dot-color);
     --category-button-hover-color: var(--dot-active-color);
+    --division-line-color: hsl(150, 20%, 20%);
 }
 
 body {
     color: var(--text-color);
     background-color: var(--bg-color);
-    font-family: 'Consolas', 'Inconsolata', 'Lucida Console', 'Roboto', 'Liberation Mono', monospace;;
+    font-family: 'Consolas', 'Inconsolata', 'Lucida Console', 'Roboto', 'Liberation Mono', monospace;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 4px;
+    border-bottom: 1px solid var(--division-line-color);
+}
+
+.navbar > * {
+    padding: 4px;
 }
 
 main {
