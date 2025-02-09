@@ -29,7 +29,7 @@ async function addToOutput(imageFilename, category) {
         "inputPath":window.settings.input_path, "outputFileName": window.settings.output_file_name,
         "imageFilename":imageFilename, "category":category
     })
-    window.output = getOutput()
+    window.output = await getOutput()
 }
 
 function displayImage(image_filename) {
@@ -46,6 +46,20 @@ function changeActiveImage(image_filename) {
     })
     dotEle = document.querySelector(`.dot[data-filename='${image_filename}']`)
     dotEle.classList.add("active")
+    reloadActiveCategory()
+}
+
+function reloadActiveCategory() {
+    document.querySelectorAll(".category-button").forEach(ele => {
+        category = ele.getAttribute("data-category")
+        if (window.output && window.activeImage) {
+            if (window.output[window.activeImage] == category) {
+                ele.classList.add("active")
+            } else {
+                ele.classList.remove("active")
+            }
+        }
+    });
 }
 
 function reloadCategories() {
@@ -55,11 +69,6 @@ function reloadCategories() {
     window.settings.categories.forEach((category) => {
         i++
         ele = document.createElement("div")
-        if (window.output && window.activeImage) {
-            if (window.output[window.activeImage] == category) {
-                ele.classList.add("active")
-            }
-        }
         ele.classList.add("category-button")
         ele.innerText = category + ` (${i})`
         container.appendChild(ele)
@@ -77,13 +86,15 @@ function reloadCategories() {
             })
         })
     })
+    reloadActiveCategory()
 }
 
 function labelActiveImage(category) {
     if (!(window.activeImage)) return
-    addToOutput(window.activeImage, category)
-    reloadImageDots(window.filenames)
-    reloadCategories()
+    addToOutput(window.activeImage, category).then(() => {
+        reloadImageDots(window.filenames)
+        reloadActiveCategory()
+    })
 }
 
 function reloadImageDots(filenames) {
@@ -91,6 +102,7 @@ function reloadImageDots(filenames) {
     container.innerHTML = ""
     filenames.forEach(filename => {
         ele = document.createElement("div")
+        ele.appendChild(document.createElement("div"))
         ele.classList.add("dot")
         ele.setAttribute("data-filename", filename)
         container.appendChild(ele)
