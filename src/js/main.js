@@ -40,6 +40,9 @@ function displayImage(image_filename) {
 function changeActiveImage(image_filename) {
     window.activeImage = image_filename
     displayImage(image_filename)
+    document.querySelectorAll(".dot").forEach((ele) => {
+        ele.classList.remove("active")
+    })
     dotEle = document.querySelector(`.dot[data-filename='${image_filename}']`)
     dotEle.classList.add("active")
 }
@@ -74,16 +77,23 @@ function labelActiveImage(category) {
     addToOutput(window.activeImage, category)
 }
 
+function reloadImageDots() {
+    const container = document.getElementById("images-nav")
+    filenames.forEach(filename => {
+        ele = document.createElement("div")
+        ele.classList.add("dot")
+        ele.setAttribute("data-filename", filename)
+        container.appendChild(ele)
+        ele.addEventListener("click", () => {
+            changeActiveImage(filename)
+        })
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     window.settings = loadSettings().then(() => {
         getImageFilenames().then((filenames) => {
-            const container = document.getElementById("images-nav")
-            filenames.forEach(filename => {
-                ele = document.createElement("div")
-                ele.classList.add("dot")
-                ele.setAttribute("data-filename", filename)
-                container.appendChild(ele)
-            });
+            reloadImageDots()
             reloadCategories()
             changeActiveImage(filenames[0])
         })
