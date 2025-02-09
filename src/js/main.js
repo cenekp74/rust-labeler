@@ -45,13 +45,33 @@ function changeActiveImage(image_filename) {
 }
 
 function reloadCategories() {
+    i = 0
     window.settings.categories.forEach((category) => {
+        i++
         const container = document.getElementById("categories")
         ele = document.createElement("div")
         ele.classList.add("category-button")
-        ele.innerText = category
+        ele.innerText = category + ` (${i})`
         container.appendChild(ele)
+        ele.addEventListener("click", () => {
+            labelActiveImage(category)
+        })
+        ele.setAttribute("data-key", i)
+        ele.setAttribute("data-category", category)
+        document.addEventListener("keypress", (e) => {
+            document.querySelectorAll(".category-button").forEach((buttonEle) => {
+                key = buttonEle.getAttribute("data-key")
+                if (key==e.key) {
+                    labelActiveImage(buttonEle.getAttribute("data-category"))
+                }
+            })
+        })
     })
+}
+
+function labelActiveImage(category) {
+    if (!(window.activeImage)) return
+    addToOutput(window.activeImage, category)
 }
 
 window.addEventListener("DOMContentLoaded", () => {
