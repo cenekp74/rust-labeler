@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs, hash::Hash, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 use serde::{Serialize, Deserialize};
 use image::{DynamicImage, ImageReader, ImageFormat};
 use std::io::Cursor;
@@ -70,8 +70,8 @@ fn get_image(image_path: String) -> Result<String, String> {
 }
 
 #[tauri::command]
-fn get_output(input_path: String, output_filename: String) -> Result<HashMap<String, String>, String> {
-    let output_file_path = Path::new(&input_path).join(Path::new(&output_filename));
+fn get_output(input_path: String, output_file_name: String) -> Result<HashMap<String, String>, String> {
+    let output_file_path = Path::new(&input_path).join(Path::new(&output_file_name));
     if let Ok(file) = fs::File::open(output_file_path) {
         serde_json::from_reader(file).map_err(|e| e.to_string())
     } else {
@@ -82,8 +82,8 @@ fn get_output(input_path: String, output_filename: String) -> Result<HashMap<Str
 }
 
 #[tauri::command]
-fn add_to_output(input_path: String, output_filename: String, image_filename: String, category: String) -> Result<(), String> {
-    let output_file_path = Path::new(&input_path).join(Path::new(&output_filename));
+fn add_to_output(input_path: String, output_file_name: String, image_filename: String, category: String) -> Result<(), String> {
+    let output_file_path = Path::new(&input_path).join(Path::new(&output_file_name));
     let mut  output = {
         if let Ok(file) = fs::File::open(&output_file_path) {
             serde_json::from_reader(file).map_err(|e| e.to_string())

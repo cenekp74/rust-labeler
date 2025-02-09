@@ -19,6 +19,18 @@ async function getImageFilenames() {
     return filenames
 }
 
+async function getOutput() {
+    output = await invoke("get_output", {"inputPath":window.settings.input_path, "outputFileName": window.settings.output_file_name})
+    return output
+}
+
+async function addToOutput(imageFilename, category) {
+    await invoke("add_to_output", {
+        "inputPath":window.settings.input_path, "outputFileName": window.settings.output_file_name,
+        "imageFilename":imageFilename, "category":category
+    })
+}
+
 function displayImage(image_filename) {
     getImage(image_filename).then((img) => {
         document.getElementById("main-image").setAttribute("src", img)
