@@ -62,6 +62,14 @@ function reloadActiveCategory() {
             }
         }
     });
+
+    if (window.output && window.activeImage) {
+        if (window.output[window.activeImage]) {
+            document.getElementById("active-image-name").innerText = `${window.activeImage} - labeled "${window.output[window.activeImage]}"`
+        } else {
+            document.getElementById("active-image-name").innerText = `${window.activeImage} - not labeled`
+        }
+    }
 }
 
 function reloadCategories() {
