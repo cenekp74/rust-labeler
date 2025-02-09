@@ -46,6 +46,7 @@ function changeActiveImage(image_filename) {
     })
     dotEle = document.querySelector(`.dot[data-filename='${image_filename}']`)
     dotEle.classList.add("active")
+    document.getElementById("active-image-name").innerText = image_filename
     reloadActiveCategory()
 }
 

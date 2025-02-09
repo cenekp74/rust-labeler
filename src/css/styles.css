@@ -1,6 +1,18 @@
 :root {
-    --text-color: black;
+    --text-color: #eeeeee;
     --border-radius: 10px;
+    --bg-color: hsl(150, 10%, 5%);
+    --dot-color: hsl(150, 20%, 30%);
+    --dot-active-color: hsl(150, 30%, 50%);
+    --dot-labeled-color: hsl(225, 20%, 40%);
+    --category-button-active-color: var(--dot-color);
+    --category-button-hover-color: var(--dot-active-color);
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    font-family: 'Consolas', 'Inconsolata', 'Lucida Console', 'Roboto', 'Liberation Mono', monospace;;
 }
 
 main {
@@ -8,27 +20,41 @@ main {
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 32px;
 }
 
 #images-nav {
-    width: 90%;
+    width: 80%;
     display: flex;
     flex-wrap: wrap;
-    gap: 1px;
+    gap: 2px;
+    margin-bottom: 16px;
 }
 
 #images-nav .dot {
+    position: relative;
+}
+
+#images-nav .dot div {
     width: 10px;
     height: 10px;
-    background-color: blue;
+    background-color: var(--dot-color);
     border-radius: 50%;
     position: relative;
     cursor: pointer;
+    transition: .1s;
 }
 
-#images-nav .dot.active {
-    background-color: red;
+#images-nav .dot.active div {
+    background-color: var(--dot-active-color) !important;
+}
+
+#images-nav .dot.labeled div {
+    background-color: var(--dot-labeled-color);
+}
+
+#images-nav .dot:hover div {
+    scale: 1.2;
+    background-color: var(--dot-active-color);
 }
 
 #images-nav .dot:hover::after {
@@ -37,20 +63,26 @@ main {
     top: 25px;
     left: 50%;
     transform: translateX(-50%);
-    background: black;
-    color: white;
+    background: var(--bg-color);
+    border: 1px solid var(--dot-active-color);
+    color: var(--text-color);
     padding: 5px;
     border-radius: 5px;
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 14px;
     z-index: 10;
 }
 
+#active-image-name {
+    font-size: 1.1rem;
+}
+
 #main-image {
-    max-width: 700px;
+    max-width: min(700px, 90vw);
     border: 2px solid var(--text-color);
     border-radius: var(--border-radius);
-    padding: 16px;
+    padding: 8px;
+    margin: 8px 0 12px;
 }
 
 #categories {
@@ -64,4 +96,14 @@ main {
     border: 1px solid var(--text-color);
     border-radius: var(--border-radius);
     padding: 8px 16px;
+    transition: .1s;
+}
+
+.category-button.active {
+    background-color: var(--category-button-active-color);
+}
+
+.category-button:hover {
+    cursor: pointer;
+    background-color: var(--category-button-hover-color);
 }
