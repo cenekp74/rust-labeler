@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{collections::HashMap, fs, hash::Hash, path::Path};
 use serde::{Serialize, Deserialize};
 use image::{DynamicImage, ImageReader, ImageFormat};
 use std::io::Cursor;
@@ -69,11 +69,40 @@ fn get_image(image_path: String) -> Result<String, String> {
     image_to_base64(&img)
 }
 
+#[tauri::command]
+fn get_output(input_path: String, output_filename: String) -> Result<HashMap<String, String>, String> {
+    let output_file_path = Path::new(&input_path).join(Path::new(&output_filename));
+    if let Ok(file) = fs::File::open(output_file_path) {
+        serde_json::from_reader(file).map_err(|e| e.to_string())
+    } else {
+        Ok(
+            HashMap::new()
+        )
+    }
+}
+
+#[tauri::command]
+fn add_to_output(input_path: String, output_filename: String, image_filename: String, category: String) -> Result<(), String> {
+    let output_file_path = Path::new(&input_path).join(Path::new(&output_filename));
+    let mut  output = {
+        if let Ok(file) = fs::File::open(&output_file_path) {
+            serde_json::from_reader(file).map_err(|e| e.to_string())
+        } else {
+            Ok(
+                HashMap::new()
+            )
+        }
+    }?;
+    output.insert(image_filename, category);
+    let output = serde_json::to_string_pretty(&output).map_err(|e| e.to_string())?;
+    fs::write(output_file_path, output).map_err(|e| e.to_string())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image])
+        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image, get_output, add_to_output])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
