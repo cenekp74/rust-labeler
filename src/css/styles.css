@@ -1,6 +1,7 @@
 :root {
     --text-color: #eeeeee;
     --border-radius: 10px;
+    --muted-text-color: hsl(150, 10%, 70%);
     --bg-color: hsl(150, 10%, 5%);
     --dot-color: hsl(150, 20%, 30%);
     --dot-active-color: hsl(150, 30%, 50%);
@@ -91,7 +92,7 @@ main {
 #main-image {
     max-width: min(700px, 90vw);
     width: 50vw;
-    border: 2px solid var(--text-color);
+    border: 1px solid var(--division-line-color);
     border-radius: var(--border-radius);
     padding: 8px;
     margin: 8px 0 12px;
@@ -118,4 +119,100 @@ main {
 .category-button:hover {
     cursor: pointer;
     background-color: var(--category-button-hover-color);
+}
+
+#edit-categories {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: #000000be;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+#edit-categories.active {
+    display: flex;
+}
+
+#edit-categories > div {
+    width: min(400px, 90vw);
+    height: 400px;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    padding: 8px;
+    border: 1px solid var(--division-line-color);
+}
+
+#close-edit-categories-buton {
+    cursor: pointer;
+}
+
+#close-edit-categories-buton svg {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    fill: var(--text-color);
+}
+
+#edit-categories #categories-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+#edit-categories #categories-inputs > div {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+#edit-categories #categories-inputs input {
+    background-color: var(--text-color);
+    line-height: 1.3rem;
+    border: 1px solid var(--division-line-color);
+    color: var(--bg-color);
+    padding: 4px;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    text-indent: 4px;
+    font-family: monospace;
+}
+
+#edit-categories .trash-icon {
+    width: 20px;
+    height: 20px;
+    mask-image: url(/img/trash.svg);
+    mask-size: 15px;
+    mask-repeat: no-repeat;
+    mask-position: center center;
+    background-color: var(--muted-text-color);
+    transition: .1s;
+    cursor: pointer;
+}
+
+#edit-categories .trash-icon:hover {
+    background-color: var(--text-color);
+}
+
+#add-new-category-button {
+    color: var(--muted-text-color);
+    transition: .1s;
+    cursor: pointer;
+}
+
+#add-new-category-button:hover {
+    color: var(--text-color);
+}
+
+#edit-categories-for-text {
+    position: absolute;
+    bottom: 4px;
+    font-size: .7em;
 }

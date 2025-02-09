@@ -70,7 +70,10 @@ function reloadCategories() {
     i = 0
     let categories = window.settings.categories[window.settings.input_path] // if there are categories for this input path, use those
     if (!categories) {
-        categories = window.settings.categories[Object.keys(window.settings.categories)[Object.keys(window.settings.categories).length-1]]
+        categories = window.settings.categories[Object.keys(window.settings.categories)[Object.keys(window.settings.categories).length-1]] // else use the last used categories
+    }
+    if (!categories) {
+        categories = []
     }
     window.settings.categories[window.settings.input_path] = categories
     saveSettings(window.settings)
@@ -137,6 +140,54 @@ async function changeInputPath() {
     main()
 }
 
+/** function for processing click on "add new category" button in categories edit window */
+function addNewCategory() {
+    window.settings.categories[window.settings.input_path].push("changeme")
+    reloadCategories()
+    showEditCategoriesWindow()
+    saveSettings()
+}
+
+/** function for loading/reloading the edit categories window */
+function showEditCategoriesWindow() {
+    document.getElementById("edit-categories-for-text").innerText = `*for ${window.settings.input_path}`
+    const container = document.querySelector("#edit-categories #categories-inputs")
+    container.innerHTML = ""
+    i = 0
+    window.settings.categories[window.settings.input_path].forEach((category) => {
+        ele = document.createElement("div")
+        inputEle = document.createElement("input")
+        inputEle.value = category
+        inputEle.setAttribute("data-category-index", i)
+        trashEle = document.createElement("div")
+        trashEle.classList.add("trash-icon")
+        trashEle.setAttribute("data-category-index", i)
+
+        trashEle.addEventListener("click", (e) => {
+            categoryIndex = e.target.getAttribute("data-category-index")
+            window.settings.categories[window.settings.input_path].splice(categoryIndex, 1)
+            reloadCategories()
+            showEditCategoriesWindow()
+            saveSettings()
+        })
+
+        ele.appendChild(inputEle)
+        ele.appendChild(trashEle)
+
+        inputEle.addEventListener("change", (e) => {
+            categoryIndex = e.target.getAttribute("data-category-index")
+            newCategory = e.target.value
+            window.settings.categories[window.settings.input_path][categoryIndex] = newCategory
+            reloadCategories()
+            saveSettings()
+        })
+
+        container.appendChild(ele)
+        i++
+    })
+    document.getElementById("edit-categories").classList.add("active")
+}
+
 function main() {
     window.output = getOutput()
     getImageFilenames().then((filenames) => {
@@ -155,3 +206,15 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("input-path-button").addEventListener("click", changeInputPath)
+
+document.getElementById("edit-categories-button").addEventListener("click", () => {
+    showEditCategoriesWindow()
+})
+
+document.getElementById("close-edit-categories-buton").addEventListener("click", () => {
+    document.getElementById("edit-categories").classList.remove("active")
+})
+
+document.getElementById("edit-categories").addEventListener("keypress", (e) => {e.stopPropagation()}) // this is to stop labeling images when pressing keys in edit categories window
+
+document.getElementById("add-new-category-button").addEventListener("click", addNewCategory)
