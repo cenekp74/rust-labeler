@@ -67,7 +67,13 @@ function reloadCategories() {
     const container = document.getElementById("categories")
     container.innerHTML = ""
     i = 0
-    window.settings.categories.forEach((category) => {
+    let categories = window.settings.categories[window.settings.input_path] // if there are categories for this input path, use those
+    if (!categories) {
+        categories = window.settings.categories[Object.keys(window.settings.categories)[Object.keys(window.settings.categories).length-1]]
+    }
+    window.settings.categories[window.settings.input_path] = categories
+    saveSettings(window.settings)
+    categories.forEach((category) => {
         i++
         ele = document.createElement("div")
         ele.classList.add("category-button")

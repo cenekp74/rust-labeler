@@ -8,7 +8,7 @@ use base64::{engine::general_purpose, Engine as _};
 struct Settings {
     input_path: Option<String>,
     output_file_name: String,
-    categories: Vec<String>,
+    categories: HashMap<String, Vec<String>>,
 }
 
 impl Settings {
@@ -16,7 +16,7 @@ impl Settings {
         Settings {
             input_path: None,
             output_file_name: "output.json".to_string(),
-            categories: vec![],
+            categories: HashMap::new(),
         }
     }
 }
