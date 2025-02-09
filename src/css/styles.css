@@ -43,13 +43,17 @@ main {
     flex-wrap: wrap;
     gap: 2px;
     margin-bottom: 16px;
+    max-height: 128px;
+    overflow-y: auto;
+    overflow-x: visible;
+    padding: 4px;
 }
 
 #images-nav .dot {
     position: relative;
 }
 
-#images-nav .dot div {
+#images-nav .dot abbr {
     width: 10px;
     height: 10px;
     background-color: var(--dot-color);
@@ -57,35 +61,20 @@ main {
     position: relative;
     cursor: pointer;
     transition: .1s;
+    display: block;
 }
 
-#images-nav .dot.active div {
+#images-nav .dot.active abbr {
     background-color: var(--dot-active-color) !important;
 }
 
-#images-nav .dot.labeled div {
+#images-nav .dot.labeled abbr {
     background-color: var(--dot-labeled-color);
 }
 
-#images-nav .dot:hover div {
+#images-nav .dot:hover abbr {
     scale: 1.2;
     background-color: var(--dot-active-color);
-}
-
-#images-nav .dot:hover::after {
-    content: attr(data-filename);
-    position: absolute;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-color);
-    border: 1px solid var(--dot-active-color);
-    color: var(--text-color);
-    padding: 5px;
-    border-radius: 5px;
-    white-space: nowrap;
-    font-size: 14px;
-    z-index: 10;
 }
 
 #active-image-name {

@@ -110,7 +110,8 @@ function reloadImageDots(filenames) {
     container.innerHTML = ""
     filenames.forEach(filename => {
         ele = document.createElement("div")
-        ele.appendChild(document.createElement("div"))
+        ele.appendChild(document.createElement("abbr"))
+        ele.querySelector("abbr").setAttribute("title", filename)
         ele.classList.add("dot")
         ele.setAttribute("data-filename", filename)
         container.appendChild(ele)
@@ -147,7 +148,8 @@ function main() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    window.settings = loadSettings().then(() => {
+    loadSettings().then((settings) => {
+        window.settings = settings
         main()
     })
 });
