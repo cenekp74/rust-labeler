@@ -113,6 +113,7 @@ function labelActiveImage(category) {
     addToOutput(window.activeImage, category).then(() => {
         reloadImageDots(window.filenames)
         reloadActiveCategory()
+        updateStats()
     })
 }
 
@@ -154,6 +155,8 @@ function addNewCategory() {
     reloadCategories()
     showEditCategoriesWindow()
     saveSettings()
+    categoryInputs = document.querySelectorAll("#categories-inputs input")
+    categoryInputs[categoryInputs.length-1].select() // select text in the created input
 }
 
 /** function for loading/reloading the edit categories window */
@@ -196,6 +199,19 @@ function showEditCategoriesWindow() {
     document.getElementById("edit-categories").classList.add("active")
 }
 
+/** function to update #stats element and #current-input-path element */
+function updateStats() {
+    if (!window.settings.input_path) return
+    if (!window.filenames) return
+    document.getElementById("current-input-path").innerText = window.settings.input_path
+    n_of_images = window.filenames.length
+    n_of_labeled_images = 0
+    if (window.output) {
+        n_of_labeled_images = Object.keys(window.output).length
+    }
+    document.getElementById("stats").innerHTML = `Total: <b>${n_of_images}</b> - Labeled: <b>${n_of_labeled_images}</b> - Unlabeled: <b>${n_of_images-n_of_labeled_images}</b>`
+}
+
 function main() {
     window.output = getOutput()
     getImageFilenames().then((filenames) => {
@@ -203,6 +219,7 @@ function main() {
         reloadImageDots(filenames)
         changeActiveImage(filenames[0])
         reloadCategories()
+        updateStats()
     })
 }
 

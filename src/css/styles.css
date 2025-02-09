@@ -21,7 +21,7 @@ body {
 
 .navbar {
     display: flex;
-    gap: 16px;
+    gap: 8px;
     margin-bottom: 16px;
     padding: 4px;
     border-bottom: 1px solid var(--division-line-color);
@@ -44,9 +44,22 @@ main {
     flex-direction: column;
 }
 
-#images-nav {
+main > div {
     width: 80%;
     max-width: 900px;
+}
+
+#current-input-path {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+#stats {
+    font-size: .9rem;
+    margin-top: 8px;
+}
+
+#images-nav {
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
@@ -87,6 +100,7 @@ main {
 
 #active-image-name {
     font-size: 1.1rem;
+    text-align: center;
 }
 
 #main-image {
