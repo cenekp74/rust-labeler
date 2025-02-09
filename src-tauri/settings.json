@@ -1,8 +1,12 @@
 {
-  "input_path": "C:/Users/potuz/Pictures/iono-temp",
+  "input_path": null,
   "output_file_name": "output.json",
   "categories": {
     "C:/Users/potuz/Pictures/iono-temp": [
+      "1",
+      "2"
+    ],
+    "C:\\Users\\potuz\\Desktop\\UFA\\iono\\data\\2017_226-365\\1": [
       "1",
       "2"
     ],

@@ -1,4 +1,5 @@
 const { invoke } = window.__TAURI__.core;
+const { open } = window.__TAURI__.dialog;
 
 async function loadSettings() {
     settings = await invoke("load_settings");
@@ -125,14 +126,30 @@ function reloadImageDots(filenames) {
     });
 }
 
+async function changeInputPath() {
+    path = await open({
+        multiple: false,
+        directory: true,
+    })
+    window.settings.input_path = path
+    saveSettings(window.settings)
+    main()
+}
+
+function main() {
+    window.output = getOutput()
+    getImageFilenames().then((filenames) => {
+        window.filenames = filenames
+        reloadImageDots(filenames)
+        changeActiveImage(filenames[0])
+        reloadCategories()
+    })
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     window.settings = loadSettings().then(() => {
-        window.output = getOutput()
-        getImageFilenames().then((filenames) => {
-            window.filenames = filenames
-            reloadImageDots(filenames)
-            changeActiveImage(filenames[0])
-            reloadCategories()
-        })
+        main()
     })
 });
+
+document.getElementById("input-path-button").addEventListener("click", changeInputPath)
