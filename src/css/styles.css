@@ -8,6 +8,7 @@
     --category-button-active-color: var(--dot-color);
     --category-button-hover-color: var(--dot-active-color);
     --division-line-color: hsl(150, 20%, 20%);
+    --navbar-hover-color: hsl(150, 20%, 15%);
 }
 
 body {
@@ -26,7 +27,13 @@ body {
 }
 
 .navbar > * {
-    padding: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+}
+
+.navbar > *:hover {
+    background-color: var(--navbar-hover-color);
 }
 
 main {
@@ -83,6 +90,7 @@ main {
 
 #main-image {
     max-width: min(700px, 90vw);
+    width: 50vw;
     border: 2px solid var(--text-color);
     border-radius: var(--border-radius);
     padding: 8px;
