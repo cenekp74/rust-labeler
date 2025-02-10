@@ -39,6 +39,10 @@ function openOutputFile() {
     invoke("open_output_file", {"inputPath":window.settings.input_path, "outputFileName":window.settings.output_file_name})
 }
 
+function openSettingsFile() {
+    invoke("open_settings_file")
+}
+
 function displayImage(image_filename) {
     getImage(image_filename).then((img) => {
         document.getElementById("main-image").setAttribute("src", img)
@@ -245,17 +249,11 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("input-path-button").addEventListener("click", changeInputPath)
-
-document.getElementById("edit-categories-button").addEventListener("click", () => {
-    showEditCategoriesWindow()
-})
-
+document.getElementById("edit-categories-button").addEventListener("click", showEditCategoriesWindow)
 document.getElementById("close-edit-categories-buton").addEventListener("click", () => {
     document.getElementById("edit-categories").classList.remove("active")
 })
-
 document.getElementById("edit-categories").addEventListener("keypress", (e) => {e.stopPropagation()}) // this is to stop labeling images when pressing keys in edit categories window
-
 document.getElementById("add-new-category-button").addEventListener("click", addNewCategory)
-
 document.getElementById("open-output-button").addEventListener("click", openOutputFile)
+document.getElementById("open-settings-button").addEventListener("click", openSettingsFile)

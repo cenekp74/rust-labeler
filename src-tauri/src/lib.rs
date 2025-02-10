@@ -37,8 +37,8 @@ fn load_settings() -> Result<Settings, String> {
 #[tauri::command]
 fn save_settings(settings: Settings) -> Result<(), String> {
     let settings_file_path = Path::new("settings.json");
-    let data = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
-
+    let mut data = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
+    data += "\n// restart the app to apply";
     fs::write(settings_file_path, data).map_err(|e| e.to_string())
 }
 
@@ -115,12 +115,21 @@ fn open_output_file(input_path: String, output_file_name: String) -> Result<(), 
     Ok(())
 }
 
+#[tauri::command]
+fn open_settings_file() -> Result<(), String> {
+    let settings_file_path = Path::new("settings.json");
+    thread::spawn(move || {
+        _ = edit_file(settings_file_path);
+    });
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image, get_output, add_to_output, open_output_file])
+        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image, get_output, add_to_output, open_output_file, open_settings_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
