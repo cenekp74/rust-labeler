@@ -37,8 +37,7 @@ fn load_settings() -> Result<Settings, String> {
 #[tauri::command]
 fn save_settings(settings: Settings) -> Result<(), String> {
     let settings_file_path = Path::new("settings.json");
-    let mut data = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
-    data += "\n// restart the app to apply";
+    let data = serde_json::to_string_pretty(&settings).map_err(|e| e.to_string())?;
     fs::write(settings_file_path, data).map_err(|e| e.to_string())
 }
 
