@@ -17,7 +17,7 @@ impl Settings {
     fn default() -> Self {
         Settings {
             input_path: None,
-            output_file_name: "output.json".to_string(),
+            output_file_name: "rust-labeler.json".to_string(),
             categories: HashMap::new(),
         }
     }
