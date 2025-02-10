@@ -57,6 +57,7 @@ function changeActiveImage(image_filename) {
     reloadActiveCategory()
 }
 
+/** reloads active category in buttons and in active image name */
 function reloadActiveCategory() {
     document.querySelectorAll(".category-button").forEach(ele => {
         category = ele.getAttribute("data-category")
@@ -234,7 +235,7 @@ function main() {
 
 window.addEventListener("DOMContentLoaded", () => {
     loadSettings().then((settings) => {
-        if (!settings.inputPath) {
+        if (!settings.input_path) {
             document.getElementById("active-image-name").innerText = "Please open a folder and add categories to start"
             return
         }
