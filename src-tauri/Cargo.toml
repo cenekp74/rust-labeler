@@ -26,4 +26,5 @@ hyper-tls = "0.6.0"
 image = "0.25.5"
 base64 = "0.22.1"
 tauri-plugin-dialog = "2"
+edit = "0.1.5"
 

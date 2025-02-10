@@ -3,6 +3,8 @@ use serde::{Serialize, Deserialize};
 use image::{DynamicImage, ImageReader, ImageFormat};
 use std::io::Cursor;
 use base64::{engine::general_purpose, Engine as _};
+use edit::edit_file;
+use std::thread;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Settings {
@@ -98,12 +100,21 @@ fn add_to_output(input_path: String, output_file_name: String, image_filename: S
     fs::write(output_file_path, output).map_err(|e| e.to_string())
 }
 
+#[tauri::command]
+fn open_output_file(input_path: String, output_file_name: String) -> Result<(), String> {
+    let output_file_path = Path::new(&input_path).join(Path::new(&output_file_name));
+    thread::spawn(move || {
+        _ = edit_file(output_file_path);
+    });
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image, get_output, add_to_output])
+        .invoke_handler(tauri::generate_handler![load_settings, save_settings, get_image_filenames, get_image, get_output, add_to_output, open_output_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
