@@ -83,6 +83,15 @@ function reloadActiveCategory() {
     }
 }
 
+function handleDocumentKeypress(e) {
+    document.querySelectorAll(".category-button").forEach((buttonEle) => {
+        key = buttonEle.getAttribute("data-key")
+        if (key==e.key) {
+            labelActiveImage(buttonEle.getAttribute("data-category"))
+        }
+    })
+}
+
 function reloadCategories() {
     const container = document.getElementById("categories")
     container.innerHTML = ""
@@ -107,14 +116,10 @@ function reloadCategories() {
         })
         ele.setAttribute("data-key", i)
         ele.setAttribute("data-category", category)
-        document.addEventListener("keypress", (e) => {
-            document.querySelectorAll(".category-button").forEach((buttonEle) => {
-                key = buttonEle.getAttribute("data-key")
-                if (key==e.key) {
-                    labelActiveImage(buttonEle.getAttribute("data-category"))
-                }
-            })
-        })
+    
+        document.removeEventListener("keypress", handleDocumentKeypress, true)
+        document.removeEventListener("keypress", handleDocumentKeypress)
+        document.addEventListener("keypress", handleDocumentKeypress)
     })
     reloadActiveCategory()
 }
@@ -125,6 +130,10 @@ function labelActiveImage(category) {
         reloadImageDots(window.filenames)
         reloadActiveCategory()
         updateStats()
+        let activeImageIndex = window.filenames.indexOf(window.activeImage);
+        if (!(activeImageIndex === -1 || activeImageIndex === window.filenames.length - 1)) {
+            changeActiveImage(window.filenames[activeImageIndex+1])
+        }
     })
 }
 
@@ -192,7 +201,7 @@ function showEditCategoriesWindow() {
             window.settings.categories[window.settings.input_path].splice(categoryIndex, 1)
             reloadCategories()
             showEditCategoriesWindow()
-            saveSettings()
+            saveSettings(window.settings)
         })
 
         ele.appendChild(inputEle)
@@ -203,7 +212,7 @@ function showEditCategoriesWindow() {
             newCategory = e.target.value
             window.settings.categories[window.settings.input_path][categoryIndex] = newCategory
             reloadCategories()
-            saveSettings()
+            saveSettings(window.settings)
         })
 
         container.appendChild(ele)
