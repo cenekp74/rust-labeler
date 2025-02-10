@@ -35,6 +35,7 @@ async function addToOutput(imageFilename, category) {
 
 function openOutputFile() {
     if (!window.settings) return
+    if (!window.settings.input_path) return
     invoke("open_output_file", {"inputPath":window.settings.input_path, "outputFileName":window.settings.output_file_name})
 }
 
@@ -159,13 +160,15 @@ function addNewCategory() {
     window.settings.categories[window.settings.input_path].push("changeme")
     reloadCategories()
     showEditCategoriesWindow()
-    saveSettings()
+    saveSettings(window.settings)
     categoryInputs = document.querySelectorAll("#categories-inputs input")
     categoryInputs[categoryInputs.length-1].select() // select text in the created input
 }
 
 /** function for loading/reloading the edit categories window */
 function showEditCategoriesWindow() {
+    if (!window.settings) return
+    if (!window.settings.input_path) return
     document.getElementById("edit-categories-for-text").innerText = `*for ${window.settings.input_path}`
     const container = document.querySelector("#edit-categories #categories-inputs")
     container.innerHTML = ""
@@ -225,11 +228,16 @@ function main() {
         changeActiveImage(filenames[0])
         reloadCategories()
         updateStats()
+        saveSettings(window.settings)
     })
 }
 
 window.addEventListener("DOMContentLoaded", () => {
     loadSettings().then((settings) => {
+        if (!settings.inputPath) {
+            document.getElementById("active-image-name").innerText = "Please open a folder and add categories to start"
+            return
+        }
         window.settings = settings
         main()
     })
