@@ -83,7 +83,19 @@ function reloadActiveCategory() {
     }
 }
 
+// move to previous image
+function back() {
+    let activeImageIndex = window.filenames.indexOf(window.activeImage);
+    if (!(activeImageIndex === -1 || activeImageIndex === 0)) {
+        changeActiveImage(window.filenames[activeImageIndex-1])
+    }
+}
+
 function handleDocumentKeypress(e) {
+    if (e.key=="0") {
+        back()
+        return
+    }
     document.querySelectorAll(".category-button").forEach((buttonEle) => {
         key = buttonEle.getAttribute("data-key")
         if (key==e.key) {
