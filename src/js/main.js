@@ -91,9 +91,21 @@ function back() {
     }
 }
 
+// move to next image
+function next() {
+    let activeImageIndex = window.filenames.indexOf(window.activeImage);
+    if (!(activeImageIndex === -1 || activeImageIndex === window.filenames.length - 1)) {
+        changeActiveImage(window.filenames[activeImageIndex+1])
+    }
+}
+
 function handleDocumentKeypress(e) {
     if (e.key=="0") {
         back()
+        return
+    }
+    if (e.key=="Enter") {
+        next()
         return
     }
     document.querySelectorAll(".category-button").forEach((buttonEle) => {
@@ -142,10 +154,7 @@ function labelActiveImage(category) {
         reloadImageDots(window.filenames)
         reloadActiveCategory()
         updateStats()
-        let activeImageIndex = window.filenames.indexOf(window.activeImage);
-        if (!(activeImageIndex === -1 || activeImageIndex === window.filenames.length - 1)) {
-            changeActiveImage(window.filenames[activeImageIndex+1])
-        }
+        next()
     })
 }
 
