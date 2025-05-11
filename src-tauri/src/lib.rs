@@ -88,7 +88,7 @@ fn get_output(input_path: String, output_file_name: String) -> Result<HashMap<St
 #[tauri::command]
 fn add_to_output(input_path: String, output_file_name: String, image_filename: String, category: String) -> Result<(), String> {
     let output_file_path = Path::new(&input_path).join(Path::new(&output_file_name));
-    let mut  output = {
+    let mut output = {
         if let Ok(file) = fs::File::open(&output_file_path) {
             if file.metadata().map_err(|e| e.to_string())?.len() == 0 {
                 fs::write(&output_file_path, "{}").map_err(|e| e.to_string())?;

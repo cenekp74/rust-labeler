@@ -11,6 +11,8 @@ To start, click "Open" in top left corner and select a folder with your images. 
 
 After selecting a folder and creating categories, you can label an image either by clicking on one of the buttons on the bottom, or by pressing a key (the key for each category is displayed in parenthesis). To return to the previous image, press "0".  After labeling an image, you will automatically jump to the next one. You can track your progress by status bar above the image. By clicking on the dots representing images, you can jump to another image. To jump to next image immediately, press Enter. Hover over the dot to see the image filename. 
 
+If you want to assing multiple labels to one image, you can do so by holding ctrl while clicking on the category button. To remove category, hold ctrl and click it again. 
+
 To edit settings manually, you can click on "Settings" button at the top. It will open `settings.json` in default text editor. 
 
 ### Output

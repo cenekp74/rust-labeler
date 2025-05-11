@@ -66,7 +66,11 @@ function reloadActiveCategory() {
     document.querySelectorAll(".category-button").forEach(ele => {
         category = ele.getAttribute("data-category")
         if (window.output && window.activeImage) {
-            if (window.output[window.activeImage] == category) {
+            if (!window.output[window.activeImage]) {
+                ele.classList.remove("active")
+                return
+            }
+            if ((window.output[window.activeImage] == category) || (window.output[window.activeImage].split(";").includes(category))) {
                 ele.classList.add("active")
             } else {
                 ele.classList.remove("active")
@@ -135,8 +139,20 @@ function reloadCategories() {
         ele.classList.add("category-button")
         ele.innerText = category + ` (${i})`
         container.appendChild(ele)
-        ele.addEventListener("click", () => {
-            labelActiveImage(category)
+        ele.addEventListener("click", (e) => {
+            if (e.ctrlKey) {
+                if (window.output[window.activeImage]) {
+                    if (window.output[window.activeImage].split(";").includes(category)) {
+                        labelActiveImage((window.output[window.activeImage].split(";").filter(s => s != category)).join(";"), loadNext=false)
+                    } else {
+                        labelActiveImage(`${window.output[window.activeImage]};${category}`, loadNext=false)
+                    }
+                } else {
+                    labelActiveImage(category, loadNext=false)
+                }
+            } else {
+                labelActiveImage(category)
+            }
         })
         ele.setAttribute("data-key", i)
         ele.setAttribute("data-category", category)
@@ -148,13 +164,13 @@ function reloadCategories() {
     reloadActiveCategory()
 }
 
-function labelActiveImage(category) {
+function labelActiveImage(category, loadNext=true) {
     if (!(window.activeImage)) return
     addToOutput(window.activeImage, category).then(() => {
         reloadImageDots(window.filenames)
         reloadActiveCategory()
         updateStats()
-        next()
+        if (loadNext) next()
     })
 }
 
